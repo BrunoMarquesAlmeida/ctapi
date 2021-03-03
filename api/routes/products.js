@@ -7,14 +7,10 @@ const Product = require("../models/product");
 
 router.get("/", (req, res, next) => {
   Product.find()
-    .select("title precos _id")
+    .select("title precos _id ribbons vendas description specs img categorias")
     .exec()
-    .then((docs) => {
-      const response = {
-        count: docs.length,
-        products: docs,
-      };
-      res.status(200).json(response);
+    .then((products) => {
+      res.status(200).json(products);
     })
     .catch((err) => {
       console.log(err);
@@ -25,22 +21,54 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/", (req, res, next) => {
-  const product = new Product({
-    _id: new mongoose.Types.ObjectId(),
-    title: req.body.title,
-    precos: req.body.precos,
-  });
+  // const product = new Product({
+  //   _id: new mongoose.Types.ObjectId(),
+  //   title: req.body.title,
+  //   precos: req.body.precos,
+  //   description: req.body.description,
+  //   categorias: req.body.categorias,
+  //   specs: req.body.specs,
+  //   img: req.body.specs,
+  //   precos: req.body.precos,
+  //   ribbons: req.body.ribbons,
+  //   vendas: req.body.vendas,
+  // });
 
-  product
-    .save()
-    .then((result) => {
-      console.log(result);
-      res.status(201).json(result);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ error: err });
+  // product
+  //   .save()
+  //   .then((result) => {
+  //     console.log(result);
+  //     res.status(201).json(result);
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //     res.status(500).json({ error: err });
+  //   });
+  req.body.map((product) => {
+    const newProduct = new Product({
+      _id: new mongoose.Types.ObjectId(),
+      title: product.title,
+      precos: product.precos,
+      description: product.description,
+      categorias: product.categorias,
+      specs: product.specs,
+      img: product.specs,
+      precos: product.precos,
+      ribbons: product.ribbons,
+      vendas: product.vendas,
     });
+
+    newProduct
+      .save()
+      .then((result) => {
+        console.log(result);
+        res.status(201).json(result);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ error: err });
+      });
+  });
 });
 
 router.get("/:id", (req, res, next) => {
