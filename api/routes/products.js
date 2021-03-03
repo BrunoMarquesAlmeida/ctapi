@@ -52,7 +52,7 @@ router.post("/", (req, res, next) => {
       description: product.description,
       categorias: product.categorias,
       specs: product.specs,
-      img: product.specs,
+      img: product.img,
       precos: product.precos,
       ribbons: product.ribbons,
       vendas: product.vendas,
