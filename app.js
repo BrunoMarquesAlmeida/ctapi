@@ -15,7 +15,7 @@ const productRoutes = require("./api/routes/products");
 const orderRoutes = require("./api/routes/orders");
 
 mongoose.connect(
-  `mongodb+srv://user:${process.env.mongoPW}@comprotador.fjae1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
+  `mongodb+srv://user:comprotadorapi@comprotador.fjae1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
   { useNewUrlParser: true, useUnifiedTopology: true }
 );
 
