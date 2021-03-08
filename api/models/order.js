@@ -8,7 +8,6 @@ const orderSchema = mongoose.Schema({
   payment: { type: Object, required: true },
   totals: { type: Object, required: true },
   status: { type: String, required: true },
-  userId: String,
 });
 
 module.exports = mongoose.model("Order", orderSchema);
