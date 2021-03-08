@@ -7,7 +7,7 @@ const Product = require("../models/product");
 
 router.get("/", (req, res) => {
   Order.find()
-    .select("address items _id payment delivery totals status")
+    .select("address items _id payment delivery totals status userId")
     .exec()
     .then((orders) => {
       res.status(200).json(orders);
@@ -24,8 +24,10 @@ router.get("/:id", (req, res) => {
 
   Order.findById(id)
     .exec()
-    .then(({ _id, address, items, delivery, payment, totals }) => {
-      res.status(200).json({ _id, address, items, delivery, payment, totals });
+    .then(({ _id, address, items, delivery, payment, totals, userId }) => {
+      res
+        .status(200)
+        .json({ _id, address, items, delivery, payment, totals, userId });
     })
     .catch((err) => {
       res.status(500).json({ err: err });
@@ -41,8 +43,10 @@ router.post("/", (req, res, next) => {
     delivery: req.body.delivery,
     totals: req.body.totals,
     status: "Em preparação",
+    userId: req.body.userId,
   });
 
+  // trigger sales counter to go up on ordered products
   Object.values(req.body.items).map(({ _id }) => {
     Product.updateOne({ _id }, { $inc: { vendas: 1 } })
       .exec()
