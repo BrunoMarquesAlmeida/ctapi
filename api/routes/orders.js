@@ -7,7 +7,7 @@ const Product = require("../models/product");
 
 router.get("/", (req, res) => {
   Order.find()
-    .select("address items _id payment delivery totals status userId")
+    .select("address items _id payment delivery date totals status userId")
     .exec()
     .then((orders) => {
       res.status(200).json(orders);
@@ -19,26 +19,35 @@ router.get("/", (req, res) => {
     });
 });
 
-router.get("/:id", (req, res) => {
-  const { id } = req.params;
+// router.get("/:id", (req, res) => {
+//   const { id } = req.params;
 
-  Order.findById(id)
-    .exec()
-    .then(({ _id, address, items, delivery, payment, totals, userId }) => {
-      res
-        .status(200)
-        .json({ _id, address, items, delivery, payment, totals, userId });
-    })
-    .catch((err) => {
-      res.status(500).json({ err: err });
-    });
-});
+//   Order.findById(id)
+//     .exec()
+//     .then(
+//       ({ _id, address, items, delivery, payment, totals, userId, date }) => {
+//         res.status(200).json({
+//           _id,
+//           address,
+//           items,
+//           delivery,
+//           payment,
+//           totals,
+//           userId,
+//           date,
+//         });
+//       }
+//     )
+//     .catch((err) => {
+//       res.status(500).json({ err: err });
+//     });
+// });
 
 router.get("/user/:id", (req, res) => {
   const { id } = req.params;
 
   Order.find({ userId: id })
-    .select("address items _id payment delivery totals status userId")
+    .select("address items _id payment delivery totals status userId date")
     .exec()
     .then((result) => {
       res.status(200).json(result);
@@ -49,6 +58,10 @@ router.get("/user/:id", (req, res) => {
 });
 
 router.post("/", (req, res, next) => {
+  const full = new Date();
+  const short =
+    full.getDate() + "/" + (full.getMonth() + 1) + "/" + full.getFullYear();
+
   const order = new Order({
     _id: mongoose.Types.ObjectId(),
     address: req.body.address,
@@ -58,6 +71,7 @@ router.post("/", (req, res, next) => {
     totals: req.body.totals,
     status: "Em preparação",
     userId: req.body.userId,
+    date: { full, short },
   });
 
   // trigger sales counter to go up on ordered products
