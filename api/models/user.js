@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
   userId: { type: String, required: true },
-  details: {
+  address: {
     firstName: String,
     lastName: String,
-    address: String,
+    street: String,
     zip: String,
     city: String,
     email: String,
@@ -15,4 +15,4 @@ const userSchema = mongoose.Schema({
   wishlist: Array,
 });
 
-module.exports = mongoose.model("Product", productSchema);
+module.exports = mongoose.model("User", userSchema);
