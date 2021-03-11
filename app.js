@@ -13,6 +13,7 @@ const mongoose = require("mongoose");
 
 const productRoutes = require("./api/routes/products");
 const orderRoutes = require("./api/routes/orders");
+const userRoutes = require("./api/routes/users");
 
 mongoose.connect(
   `mongodb+srv://user:comprotadorapi@comprotador.fjae1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
@@ -43,6 +44,7 @@ app.use((req, res, next) => {
 // our custom routes
 app.use("/produtos", productRoutes);
 app.use("/encomendas", orderRoutes);
+app.use("/utilizadores", userRoutes);
 
 // no routes were hit
 app.use((req, res, next) => {
